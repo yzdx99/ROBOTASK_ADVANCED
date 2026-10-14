@@ -1,9 +1,8 @@
 --cpu Cortex-M3
-"freertos\main.o"
-"freertos\freertos.o"
-"freertos\stm32f1xx_it.o"
-"freertos\stm32f1xx_hal_msp.o"
-"freertos\stm32f1xx_hal_timebase_tim.o"
+"freertos\imu.o"
+"freertos\imu_alg.o"
+"freertos\oled.o"
+"freertos\serial.o"
 "freertos\croutine.o"
 "freertos\event_groups.o"
 "freertos\list.o"
@@ -14,6 +13,15 @@
 "freertos\cmsis_os2.o"
 "freertos\heap_4.o"
 "freertos\port.o"
+"freertos\main.o"
+"freertos\gpio.o"
+"freertos\freertos.o"
+"freertos\dma.o"
+"freertos\i2c.o"
+"freertos\usart.o"
+"freertos\stm32f1xx_it.o"
+"freertos\stm32f1xx_hal_msp.o"
+"freertos\stm32f1xx_hal_timebase_tim.o"
 "freertos\stm32f1xx_hal_gpio_ex.o"
 "freertos\stm32f1xx_hal_tim.o"
 "freertos\stm32f1xx_hal_tim_ex.o"
@@ -31,7 +39,7 @@
 "freertos\stm32f1xx_hal_uart.o"
 "freertos\system_stm32f1xx.o"
 "freertos\startup_stm32f103xb.o"
---strict --scatter "FreeRTOS\FreeRTOS.sct"
+--library_type=microlib --strict --scatter "FreeRTOS\FreeRTOS.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
 --list "FreeRTOS.map" -o FreeRTOS\FreeRTOS.axf

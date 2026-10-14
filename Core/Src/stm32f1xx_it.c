@@ -56,10 +56,11 @@
 
 /* External variables --------------------------------------------------------*/
 extern DMA_HandleTypeDef hdma_usart1_rx;
+extern UART_HandleTypeDef huart1;
 extern TIM_HandleTypeDef htim4;
 
 /* USER CODE BEGIN EV */
-
+extern void xPortSysTickHandler(void);
 /* USER CODE END EV */
 
 /******************************************************************************/
@@ -188,6 +189,28 @@ void TIM4_IRQHandler(void)
   /* USER CODE END TIM4_IRQn 1 */
 }
 
+/**
+  * @brief This function handles USART1 global interrupt.
+  */
+void USART1_IRQHandler(void)
+{
+  /* USER CODE BEGIN USART1_IRQn 0 */
+    
+  extern void Usart_IDLE_Handler(void);
+  Usart_IDLE_Handler();
+    
+  /* USER CODE END USART1_IRQn 0 */
+  HAL_UART_IRQHandler(&huart1);
+  /* USER CODE BEGIN USART1_IRQn 1 */
+  
+  /* USER CODE END USART1_IRQn 1 */
+}
+
 /* USER CODE BEGIN 1 */
+
+void SysTick_Handler(void)
+{
+    xPortSysTickHandler();
+}
 
 /* USER CODE END 1 */
