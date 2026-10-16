@@ -222,14 +222,15 @@ void StartUsartTask(void *argument)
   {
     if (xSemaphoreTake(UsartRxSem, portMAX_DELAY) == pdTRUE)
     {
-        memcpy(TxBuf, RxDmaBuf, RxLen);
-        HAL_UART_Transmit_DMA(&huart1, TxBuf, RxLen);
-        while (huart1.gState != HAL_UART_STATE_READY)
-        {
-            vTaskDelay(1);
-        }
+        uint16_t Len = RxLen;
         
-        HAL_UART_Receive_DMA(&huart1, RxDmaBuf, RX_BUF_SIZE);
+        HAL_UARTEx_ReceiveToIdle_DMA(&huart1, RxDmaBuf, RX_BUF_SIZE);
+        __HAL_DMA_DISABLE_IT(huart1.hdmarx, DMA_IT_HT);
+        
+        memcpy(TxBuf, RxDmaBuf, Len);
+        HAL_UART_Transmit_DMA(&huart1, TxBuf, Len);
+        
+        xSemaphoreTake(UsartTxSem, portMAX_DELAY);
     }
   }
   /* USER CODE END StartUsartTask */
