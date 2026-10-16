@@ -1,20 +1,33 @@
+/**
+  ******************************************************************************
+  * @file    OLED.c
+  * @brief   OLED 显示驱动实现（SSD1306，I2C 接口，128x64）。
+  *          基于 STM32 HAL I2C 接口，提供初始化、清屏、字符/字符串/数字显示。
+  ******************************************************************************
+  */
+
 #include "OLED.h"
 #include "OLED_Font.h"
 
 #include "FreeRTOS.h"
 #include "task.h"
 
-#define OLED_ADDR 0x78         // 从机地址（7位0x3C左移1位）
 
-static I2C_HandleTypeDef *oled_hi2c;   // 保存传进来的 I2C 句柄
+/**
+  * @brief  OLED 从机地址（7 位地址 0x3C 左移 1 位）。
+  */
+#define OLED_ADDR 0x78
 
 
+/**
+  * @brief  保存传入的 I2C 句柄，供各显示函数内部使用。
+  */
+static I2C_HandleTypeDef *oled_hi2c;
 
 
 /**
   * @brief  OLED写命令
   * @param  Command 要写入的命令
-  * @retval 无
   */
 void OLED_WriteCommand(uint8_t Command)
 {
@@ -25,7 +38,6 @@ void OLED_WriteCommand(uint8_t Command)
 /**
   * @brief  OLED写数据
   * @param  Data 要写入的数据
-  * @retval 无
   */
 void OLED_WriteData(uint8_t Data)
 {
@@ -37,7 +49,6 @@ void OLED_WriteData(uint8_t Data)
   * @brief  OLED设置光标位置
   * @param  Y 以左上角为原点，向下方向的坐标，范围：0~7
   * @param  X 以左上角为原点，向右方向的坐标，范围：0~127
-  * @retval 无
   */
 void OLED_SetCursor(uint8_t Y, uint8_t X)
 {
@@ -48,8 +59,6 @@ void OLED_SetCursor(uint8_t Y, uint8_t X)
 
 /**
   * @brief  OLED清屏
-  * @param  无
-  * @retval 无
   */
 void OLED_Clear(void)
 {  
@@ -69,7 +78,6 @@ void OLED_Clear(void)
   * @param  Line 行位置，范围：1~4
   * @param  Column 列位置，范围：1~16
   * @param  Char 要显示的一个字符，范围：ASCII可见字符
-  * @retval 无
   */
 void OLED_ShowChar(uint8_t Line, uint8_t Column, char Char)
 {      	
@@ -91,7 +99,6 @@ void OLED_ShowChar(uint8_t Line, uint8_t Column, char Char)
   * @param  Line 起始行位置，范围：1~4
   * @param  Column 起始列位置，范围：1~16
   * @param  String 要显示的字符串，范围：ASCII可见字符
-  * @retval 无
   */
 void OLED_ShowString(uint8_t Line, uint8_t Column, char *String)
 {
@@ -123,7 +130,6 @@ uint32_t OLED_Pow(uint32_t X, uint32_t Y)
   * @param  Column 起始列位置，范围：1~16
   * @param  Number 要显示的数字，范围：-2147483648~2147483647
   * @param  Length 要显示数字的长度，范围：1~10
-  * @retval 无
   */
 void OLED_ShowSignedNum(uint8_t Line, uint8_t Column, int32_t Number, uint8_t Length)
 {
@@ -149,8 +155,6 @@ void OLED_ShowSignedNum(uint8_t Line, uint8_t Column, int32_t Number, uint8_t Le
 
 /**
   * @brief  OLED初始化
-  * @param  无
-  * @retval 无
   */
 
 void OLED_Init(I2C_HandleTypeDef *hi2c)

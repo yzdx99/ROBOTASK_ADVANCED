@@ -187,11 +187,10 @@ void StartOledTask(void *argument)
 void StartImuTask(void *argument)
 {
   /* USER CODE BEGIN StartImuTask */
-  int16_t acc[3], gyro[3];
-  TickType_t lastWake = xTaskGetTickCount();
-
   MPU6050_Init(&hi2c2);
 
+  int16_t acc[3], gyro[3];
+  TickType_t lastWake = xTaskGetTickCount();
 
   /* Infinite loop */
   for(;;)
