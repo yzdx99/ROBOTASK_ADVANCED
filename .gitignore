@@ -68,3 +68,6 @@ id_ed25519.pub
 
 # video
 *.mp4
+
+# keilkill.bat
+keilkill.bat
